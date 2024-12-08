@@ -37,6 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # will be adding rest framework here
+    'rest_framework',
+    'corsheaders',
+    # register local apps
+    'apps.accounts',
+    'apps.companies',
+    'apps.employees',
+    'apps.departments'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +87,23 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+#custom user model
+AUTH_USER_MODEL = 'accounts.User'
+
+# REST FRAMEWORK SETTINGS
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+# corsheaders config
+CORS_ORIGIN_ALLOW_ALL = True # THIS IS FOR DEV ENVIRONMENT ONLY
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Password validation
