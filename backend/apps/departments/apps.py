@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
+from apps import departments
+
 
 class DepartmentsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'departments'
+    name = 'apps.departments'
