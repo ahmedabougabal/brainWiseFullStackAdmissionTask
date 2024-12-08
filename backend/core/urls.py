@@ -15,8 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.documentation import include_docs_urls #  to include DRF's auto-generated API documentation.
+
+# api url patterns with versioning
+api_patterns = [
+    path('auth/', include('apps.accounts.urls')),
+    # will update this once i finish other apps implementations
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # API V1 endpoints
+    path('api/v1/', include(api_patterns)),
+
+    # API Documentation as requested in the pdf
+    path('docs/', include_docs_urls(title='Employee Management System API')),
 ]
