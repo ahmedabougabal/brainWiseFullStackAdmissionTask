@@ -58,8 +58,8 @@ class Employee(models.Model):
     # status and dates
     status = models.CharField(
         max_length=20,
-        choices=EmployeeStatus.choices,
-        default=EmployeeStatus.APPLICATION_RECEIVED
+        choices=[(status.value, status.label) for status in EmployeeStatus],
+        default=EmployeeStatus.APPLICATION_RECEIVED.value
     )
     hired_on = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
