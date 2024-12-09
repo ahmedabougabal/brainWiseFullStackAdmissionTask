@@ -22,6 +22,7 @@ from rest_framework.documentation import include_docs_urls #  to include DRF's a
 api_patterns = [
     path('auth/', include('apps.accounts.urls')),
     # will update this once i finish other apps implementations
+    path('companies/', include('apps.companies.urls')),
 ]
 
 urlpatterns = [
