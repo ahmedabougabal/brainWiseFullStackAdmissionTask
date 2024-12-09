@@ -23,6 +23,7 @@ api_patterns = [
     path('auth/', include('apps.accounts.urls')),
     # will update this once i finish other apps implementations
     path('companies/', include('apps.companies.urls')),
+    path('departments/', include('apps.departments.urls')),
 ]
 
 urlpatterns = [
