@@ -73,3 +73,67 @@ class Employee(models.Model):
     def __str__(self):
         return f"{self.name} - {self.designation} ({self.department})"
 
+    @property
+    def days_employed(self):
+        """
+        calculate days employed if the employee is hired
+        -- returns None if not hired
+        """
+        if self.status == EmployeeStatus.HIRED and self.hired_on:
+            return (timezone.now() - self.hired_on).days
+        return None
+
+    def clean(self):
+        """
+        adds some custom validation checks
+        1- ensures department belongs to company
+        2. validates hired on date based on status
+        3. all required fields must be filled
+        """
+        if self.department and self.company and self.department.company != self.company:
+            raise ValidationError({
+                'department': 'selected department does not belong to this company'
+            })
+        if self.status == EmployeeStatus.HIRED and not self.hired_on:
+            raise ValidationError({
+                'hired': 'hired on date must be filled for hired employees'
+            })
+        if self.status != EmployeeStatus.HIRED and self.hired_on:
+            raise ValidationError({
+                'hired_on': 'hire date must be filled for hired employees'
+            })
+
+        def save(self, *args, **kwargs):
+            """
+            this method overrides save to:
+            - sets hired on date automatically when status changes to HIRED
+            - clear hired on date if status changes from Hired
+            - runs full clean for validation
+            """
+            if self.status == EmployeeStatus.HIRED and not self.hired_on:
+                self.hired_on = timezone.now()
+            elif self.status != EmployeeStatus.HIRED:
+                self.hired_on = None
+
+            self.full_clean()
+            super().save(*args, **kwargs)
+
+        def can_transition_to(self, new_status):
+            """
+            validate status transitions according to workflow
+            """
+            allowed_transitions = {
+                EmployeeStatus.APPLICATION_RECEIVED: {
+                    EmployeeStatus.INTERVIEW_SCHEDULED,
+                    EmployeeStatus.NOT_ACCEPTED
+                },
+                EmployeeStatus.INTERVIEW_SCHEDULED: {
+                    EmployeeStatus.HIRED,
+                    EmployeeStatus.NOT_ACCEPTED
+                },
+                EmployeeStatus.HIRED:set(), # no transitions from hired
+                EmployeeStatus.NOT_ACCEPTED: set() # no transitions from not accepted
+            }
+            return new_status in allowed_transitions.get(self.status, set())
+
+
