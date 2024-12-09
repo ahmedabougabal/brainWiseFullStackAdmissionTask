@@ -32,7 +32,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAdminUser]
         else:
             permission_classes = [permissions.IsAuthenticated]
-        return [permissions() for permissions in permission_classes]
+        return [permission() for permission in permission_classes]
 
     @action(detail=True, methods=['get'])
     def employees(self, request, pk=None):
