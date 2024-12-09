@@ -24,6 +24,7 @@ api_patterns = [
     # will update this once i finish other apps implementations
     path('companies/', include('apps.companies.urls')),
     path('departments/', include('apps.departments.urls')),
+    path('employees/', include('apps.employees.urls')),
 ]
 
 urlpatterns = [
