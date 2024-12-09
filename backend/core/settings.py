@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     # register local apps
-    'apps.accounts',
-    'apps.companies',
-    'apps.employees',
-    'apps.departments'
+    'apps.accounts.apps.AccountsConfig',
+    'apps.companies.apps.CompaniesConfig',
+    'apps.employees.apps.EmployeesConfig',
+    'apps.departments.apps.DepartmentsConfig',
 ]
 
 MIDDLEWARE = [
