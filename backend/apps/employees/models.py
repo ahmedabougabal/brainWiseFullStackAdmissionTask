@@ -79,7 +79,7 @@ class Employee(models.Model):
         calculate days employed if the employee is hired
         -- returns None if not hired
         """
-        if self.status == EmployeeStatus.HIRED and self.hired_on:
+        if self.status == EmployeeStatus.HIRED.value and self.hired_on:
             return (timezone.now() - self.hired_on).days
         return None
 
