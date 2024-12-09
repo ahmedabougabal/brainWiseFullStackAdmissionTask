@@ -6,7 +6,7 @@ from apps.companies.models import Company
 from apps.departments.models import Department
 # Create your models here.
 
-class EmployeeStatus(models.Model):
+class EmployeeStatus(models.TextChoices):
     """
     workflow status for employees:
     application received => schedule an interview => hired / not accepted :(
