@@ -6,6 +6,8 @@
 
 ## ⚙️ Backend Setup and 🐘 PostgreSQL Configuration
 
+> **Note**: The username, password, and database name provided in this example are placeholders and not the actual credentials.
+> 
 To set up the backend and PostgreSQL database for this project, follow these steps:
 
 1. Install dependencies: `pip install -r requirements.txt`  
@@ -31,5 +33,11 @@ To set up the backend and PostgreSQL database for this project, follow these ste
 
 ---
 
-> **Note**: The username, password, and database name provided in this example are placeholders and not the actual credentials.
+# API Testing
+
+![image](https://github.com/user-attachments/assets/246fc533-dfef-4283-9ad5-17ed6fa594a2)
+
+
+
+
 
