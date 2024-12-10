@@ -80,4 +80,6 @@ To set up the backend and PostgreSQL database for this project, follow these ste
 ![image](https://github.com/user-attachments/assets/f9b96457-d19c-4c5d-bd44-5c2027c50c28)
 
 
+![image](https://github.com/user-attachments/assets/1077cdf0-152e-4308-977e-7e67cab62196)
+
 
