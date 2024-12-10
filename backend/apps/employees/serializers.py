@@ -53,8 +53,8 @@ class EmployeeListSerializer(serializers.ModelSerializer):
     """
     simplified serializer for list views
     """
-    department_name = serializers.CharField(source='department_name', read_only=True)
-    company_name = serializers.CharField(source='company_name', read_only=True)
+    department_name = serializers.CharField(source='department.name', read_only=True)
+    company_name = serializers.CharField(source='company.name', read_only=True)
 
     class Meta:
         model = Employee
