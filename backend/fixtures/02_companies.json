@@ -1,0 +1,20 @@
+[
+    {
+        "model": "companies.company",
+        "pk": 1,
+        "fields": {
+            "name": "Tech Solutions Inc",
+            "created_at": "2024-12-09T18:00:00Z",
+            "updated_at": "2024-12-09T18:00:00Z"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 2,
+        "fields": {
+            "name": "Digital Innovations Ltd",
+            "created_at": "2024-12-09T18:00:00Z",
+            "updated_at": "2024-12-09T18:00:00Z"
+        }
+    }
+]
