@@ -74,7 +74,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(employee)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=False, methods=['get'])
     def hired_report(self, request):
         """
         this logic generates report of hired employees

@@ -67,8 +67,8 @@ class HiredEmployeeReportSerializer(serializers.ModelSerializer):
     """
     specialized serializer for hired employee report
     """
-    company_name = serializers.CharField(source='company_name', read_only=True)
-    department_name = serializers.CharField(source='department.name')
+    company_name = serializers.CharField(source='company.name', read_only=True)
+    department_name = serializers.CharField(source='department.name', read_only=True)
 
     class Meta:
         model = Employee
