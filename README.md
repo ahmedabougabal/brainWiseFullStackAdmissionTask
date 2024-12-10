@@ -11,7 +11,7 @@
 To set up the backend and PostgreSQL database for this project, follow these steps:
 
 1. Install dependencies: `pip install -r requirements.txt`  
-2. Apply migrations:  
+2. Apply migrations:  (note : ensure you are in the directory 'backend' before executing the following commands)
    `python manage.py makemigrations departments accounts employees companies`  
    `python manage.py migrate`  
 3. Load initial data:  
@@ -33,7 +33,7 @@ To set up the backend and PostgreSQL database for this project, follow these ste
 
 ---
 
-# API Testing
+# [API Testing **_Click me_** to headover to my POSTMAN public workspace and view all my endpoints listed below](https://www.postman.com/golden-noobie/brainwise-admission-api-testing-by-ahmed-abou-gabal/collection/gyjljwr/brainwise-admission-api-testing?action=share&creator=38508690)
 
 ![image](https://github.com/user-attachments/assets/246fc533-dfef-4283-9ad5-17ed6fa594a2)
 
