@@ -55,3 +55,7 @@ To set up the backend and PostgreSQL database for this project, follow these ste
 
 ![image](https://github.com/user-attachments/assets/bf62d0de-e582-416d-bbf3-5ec2c16fa9ef)
 
+
+![image](https://github.com/user-attachments/assets/5d56bbd5-e9e5-4e5b-a661-996a126bb807)
+
+
