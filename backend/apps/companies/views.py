@@ -18,7 +18,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         implement role based access control where anyone can view
         companies but only admins can create/update/delete companies
         """
-        if self.action == ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
             permission_classes = [permissions.IsAdminUser]
         else:
             permission_classes = [permissions.IsAuthenticated]
