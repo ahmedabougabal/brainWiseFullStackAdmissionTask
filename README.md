@@ -10,30 +10,31 @@
 > 
 To set up the backend and PostgreSQL database for this project, follow these steps:
 
-1. Install dependencies: `pip install -r requirements.txt`  
-2. Apply migrations:  (note : ensure you are in the directory 'backend' before executing the following commands)
+1. Install dependencies: `pip install -r requirements.txt`
+2. **__(note : ensure you are in the directory 'backend' before executing the following commands)__**.
+3. Apply migrations:
    `python manage.py makemigrations departments accounts employees companies`  
    `python manage.py migrate`  
-3. Load initial data:  
+4. Load initial data:  
    `python manage.py loaddata fixtures/01_users.json`  
    `python manage.py loaddata fixtures/02_companies.json`  
    `python manage.py loaddata fixtures/03_departments.json`  
    `python manage.py loaddata fixtures/04_employees.json`  
-4. Create a PostgreSQL user with permissions:  
+5. Create a PostgreSQL user with permissions:  
    `CREATE USER usernameOfYourChoice WITH PASSWORD '*******' CREATEDB;`  
-5. Create a database with the user as the owner:  
+6. Create a database with the user as the owner:  
    `CREATE DATABASE myBrainWiseTesting_db WITH OWNER = brainWiseAlpha;`  
-6. Connect to the database: `\c myBrainWiseTesting_db`  
-7. Grant all privileges:  
+7. Connect to the database: `\c myBrainWiseTesting_db`  
+8. Grant all privileges:  
    `GRANT ALL PRIVILEGES ON DATABASE myBrainWiseTesting_db TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO brainWiseAlpha;`  
-8. Grant schema usage: `GRANT ALL ON SCHEMA public TO brainWiseAlpha;`
+9. Grant schema usage: `GRANT ALL ON SCHEMA public TO brainWiseAlpha;`
 
 ---
 
-# [API Testing **_Click me_** to headover to my POSTMAN public workspace and view all my endpoints listed below](https://www.postman.com/golden-noobie/brainwise-admission-api-testing-by-ahmed-abou-gabal/collection/gyjljwr/brainwise-admission-api-testing?action=share&creator=38508690)
+# [My API Testing ==> **_Click me_** to headover to my **POSTMAN** public workspace and view all my endpoints listed below 👨‍💻 ](https://www.postman.com/golden-noobie/brainwise-admission-api-testing-by-ahmed-abou-gabal/collection/gyjljwr/brainwise-admission-api-testing?action=share&creator=38508690)
 
 ![image](https://github.com/user-attachments/assets/246fc533-dfef-4283-9ad5-17ed6fa594a2)
 
