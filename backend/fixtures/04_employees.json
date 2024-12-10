@@ -1,0 +1,36 @@
+[
+    {
+        "model": "employees.employee",
+        "pk": 1,
+        "fields": {
+            "company": 1,
+            "department": 1,
+            "name": "John Doe",
+            "email": "john.doe@techsolutions.com",
+            "mobile_number": "+1234567890",
+            "address": "123 Tech Street, Silicon Valley",
+            "designation": "Senior Software Engineer",
+            "status": "HIRED",
+            "hired_on": "2024-01-01T00:00:00Z",
+            "created_at": "2024-12-09T18:00:00Z",
+            "updated_at": "2024-12-09T18:00:00Z"
+        }
+    },
+    {
+        "model": "employees.employee",
+        "pk": 2,
+        "fields": {
+            "company": 1,
+            "department": 2,
+            "name": "Jane Smith",
+            "email": "jane.smith@techsolutions.com",
+            "mobile_number": "+1234567891",
+            "address": "456 Marketing Ave, Silicon Valley",
+            "designation": "Marketing Manager",
+            "status": "INTERVIEW_SCHEDULED",
+            "hired_on": null,
+            "created_at": "2024-12-09T18:00:00Z",
+            "updated_at": "2024-12-09T18:00:00Z"
+        }
+    }
+]
