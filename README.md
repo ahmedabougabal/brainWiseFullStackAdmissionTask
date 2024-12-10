@@ -58,4 +58,9 @@ To set up the backend and PostgreSQL database for this project, follow these ste
 
 ![image](https://github.com/user-attachments/assets/5d56bbd5-e9e5-4e5b-a661-996a126bb807)
 
+**_Error handling as Auth is required_**
+
+![image](https://github.com/user-attachments/assets/ff1f71be-dce8-45c5-8dcd-67e6d190f32f)
+
+
 
