@@ -19,18 +19,19 @@ To set up the backend and PostgreSQL database for this project, follow these ste
    `python manage.py loaddata fixtures/01_users.json`  
    `python manage.py loaddata fixtures/02_companies.json`  
    `python manage.py loaddata fixtures/03_departments.json`  
-   `python manage.py loaddata fixtures/04_employees.json`  
-5. Create a PostgreSQL user with permissions:  
+   `python manage.py loaddata fixtures/04_employees.json`
+5. On Bash/Zsh CLI login to psql db as a root : *__sudo -u postgres psql__*
+6. Create a PostgreSQL user with permissions:  
    `CREATE USER usernameOfYourChoice WITH PASSWORD '*******' CREATEDB;`  
-6. Create a database with the user as the owner:  
+7. Create a database with the user as the owner:  
    `CREATE DATABASE myBrainWiseTesting_db WITH OWNER = brainWiseAlpha;`  
-7. Connect to the database: `\c myBrainWiseTesting_db`  
-8. Grant all privileges:  
+8. Connect to the database: `\c myBrainWiseTesting_db`  
+9. Grant all privileges:  
    `GRANT ALL PRIVILEGES ON DATABASE myBrainWiseTesting_db TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO brainWiseAlpha;`  
    `GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO brainWiseAlpha;`  
-9. Grant schema usage: `GRANT ALL ON SCHEMA public TO brainWiseAlpha;`
+10. Grant schema usage: `GRANT ALL ON SCHEMA public TO brainWiseAlpha;`
 
 ---
 
