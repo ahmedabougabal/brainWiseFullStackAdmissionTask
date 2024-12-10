@@ -15,7 +15,7 @@ class User(AbstractUser):
         default=UserRole.EMPLOYEE,
     )
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'role']
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         verbose_name = 'user'
@@ -24,3 +24,8 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    def save(self, *args, **kwargs):
+        """if I am creating a superuser, i will be assigned to admin"""
+        if self.is_superuser:
+            self.role = UserRole.ADMIN
+        super().save(*args, **kwargs)
