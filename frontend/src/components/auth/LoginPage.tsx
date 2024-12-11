@@ -1,7 +1,7 @@
 // src/components/auth/LoginPage.tsx
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -170,6 +170,26 @@ export const LoginPage: React.FC = () => {
               disabled={loading}
             >
               {loading ? 'Signing in...' : 'Sign In'}
+            </Button>
+
+            <Button
+              component={Link}
+              to="/employee"
+              variant="outlined"
+              fullWidth
+              sx={{
+                py: 1.5,
+                textTransform: 'none',
+                borderRadius: 2,
+                borderColor: theme.palette.primary.main,
+                color: theme.palette.primary.main,
+                '&:hover': {
+                  borderColor: theme.palette.primary.dark,
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
+              }}
+            >
+              Employee Portal
             </Button>
           </Box>
         </Paper>
