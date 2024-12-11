@@ -1,20 +1,27 @@
-import axios from 'axios';
-import {LoginCredentials, AuthResponse} from "../types/auth.types";
-
-const API_URL = "http://localhost:8000/api/v1"; // APIS from the backend
+import api from './api';
+import { LoginCredentials, AuthResponse } from '../types/auth.types';
 
 export const authService = {
-    async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        const response = await axios.post<AuthResponse>(
-            `${API_URL}/auth/login/`,
-            credentials,
-        );
-        if (response.data.access){
-            localStorage.setItem('token', response.data.access);
-            localStorage.setItem('refresh', response.data.refresh);
-        }
-        return response.data;
-    },
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+    try {
+      console.log('Login request payload:', credentials); // Debug log
+
+      const response = await api.post<AuthResponse>('/auth/login/', credentials);
+      console.log('Login response:', response.data); // adds a debug log for error handling
+
+      if (response.data.access) {
+        localStorage.setItem('token', response.data.access);
+        localStorage.setItem('refresh', response.data.refresh);
+      }
+      return response.data;
+    } catch (error: any) {
+      console.error('Login error:', error.response?.data || error.message); // adds a debug log for error handling
+      if (error.response) {
+        throw new Error(error.response.data.detail || 'Login failed');
+      }
+      throw new Error('Network error occurred');
+    }
+  },
     logout(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('refresh');
