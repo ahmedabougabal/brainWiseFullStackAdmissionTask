@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8000/api/v1"; // APIS from the backend
 export const authService = {
     async login(credentials: LoginCredentials): Promise<AuthResponse> {
         const response = await axios.post<AuthResponse>(
-            `${API_URL}/auth/login`,
+            `${API_URL}/auth/login/`,
             credentials,
         );
         if (response.data.access){
