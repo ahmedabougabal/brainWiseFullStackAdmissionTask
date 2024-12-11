@@ -1,5 +1,28 @@
 # brainWiseFullStackAdmissionTask
 
+
+[![Project Status](https://img.shields.io/badge/status-Under%20Construction-yellow)](https://github.com/yourusername/mernStackMilestoneProject_ITI)  [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)  [![Deadline](https://img.shields.io/badge/deadline-Tomorrow-red)](https://github.com/yourusername/mernStackMilestoneProject_ITI)
+
+
+
+
+## 🚧 Frontend Development in Progress 🚧
+
+The frontend of this project is currently under active development and will be implemented soon.  
+
+
+---
+
+## Let's Get You Started to Run This Project Locally
+
+To clone this repository and set it up locally, use the following command:
+
+```bash
+git clone git@github.com:ahmedabougabal/brainWiseFullStackAdmissionTask.git
+
+```
+---
+
 > **Backend Setup and PostgreSQL Configuration for BrainWise Task**
 
 ---
