@@ -7,6 +7,7 @@ export interface Employee {
     email: string;
     designation: string;
     mobile_number: string;
+    address: string;
     hired_on: string;
     status: 'HIRED' | 'NOT ACCEPTED';
     company_id: number;
