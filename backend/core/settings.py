@@ -5,6 +5,8 @@ Django settings for core project.
 from pathlib import Path
 from datetime import timedelta
 import os
+from xml.dom.xmlbuilder import Options
+
 from dotenv import load_dotenv
 
 # this line loads the environment variables
@@ -119,6 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
