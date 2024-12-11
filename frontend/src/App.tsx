@@ -1,25 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import {CssBaseline, ThemeProvider, createTheme} from "@mui/material";
+import {LoginPage} from "./components/auth/LoginPage";
+import {ProtectedRoute} from "./components/auth/ProtectedRoute";
+import {AuthProvider} from "./context/AuthContext";
 
-function App(): JSX.Element {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2'
+    },
+    secondary: {
+      main: '#dc004e'
+    },
+  },
+});
+
+function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ThemeProvider theme={theme}>
+  <CssBaseline />
+  <AuthProvider>
+  <Router>
+  <Routes>
+  {/*here is the public routes */}
+  <Route path="/login" element={<LoginPage />} />
+  {/*here is the protected routes */}
+<Route path="/dashboard" element={
+  <ProtectedRoute><div>Dashboard (coming soon...)</div>
+  </ProtectedRoute>} />
+<Route path="/" element={<Navigate to="/login" replace />} />
+  </Routes>
+  </Router>
+  </AuthProvider>
+  </ThemeProvider>
   );
 }
 
