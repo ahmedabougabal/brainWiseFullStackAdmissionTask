@@ -5,6 +5,7 @@ import {LoginPage} from "./components/auth/LoginPage";
 import {EmployeeLoginPage} from "./components/auth/EmployeeLoginPage";
 import {ProtectedRoute} from "./components/auth/ProtectedRoute";
 import {AuthProvider} from "./context/AuthContext";
+import {Dashboard} from "./components/Dashboard";
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,7 @@ function App() {
             {/* Protected routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
-                <div>Dashboard (coming soon...)</div>
+                <Dashboard />
               </ProtectedRoute>
             } />
             <Route path="/employee-dashboard" element={
