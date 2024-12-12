@@ -22,12 +22,23 @@ export const authService = {
       throw new Error('Network error occurred');
     }
   },
-    logout(): void {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh');
-    },
-    getCurrentUser(): AuthResponse['user'] | null {
-        const token = localStorage.getItem('token');
-        return token ? JSON.parse(atob(token.split('.')[1])).user : null;
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh');
+  },
+  getCurrentUser(): AuthResponse['user'] | null {
+    const token = localStorage.getItem('token');
+    console.log('Current token:', token);
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded token payload:', payload);
+        return payload.user;
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+      }
     }
+    return null;
+  }
 }

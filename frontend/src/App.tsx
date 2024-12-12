@@ -6,6 +6,7 @@ import {EmployeeLoginPage} from "./components/auth/EmployeeLoginPage";
 import {ProtectedRoute} from "./components/auth/ProtectedRoute";
 import {AuthProvider} from "./context/AuthContext";
 import {Dashboard} from "./components/Dashboard";
+import {EmployeeProfile} from "./components/employees/EmployeeProfile";
 
 const theme = createTheme({
   palette: {
@@ -37,7 +38,7 @@ function App() {
             } />
             <Route path="/employee-dashboard" element={
               <ProtectedRoute>
-                <div>Employee profile (coming soon...)</div>
+                <EmployeeProfile />
               </ProtectedRoute>
             } />
             

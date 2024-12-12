@@ -73,7 +73,9 @@ export const EmployeeProfile: React.FC = () => {
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
       try {
+        console.log('Current user:', user);
         if (user?.id) {
+          console.log('Fetching employee details for ID:', user.id);
           const response = await employeeService.getById(user.id);
           console.log('Employee response:', response.data);  
           setEmployee({
