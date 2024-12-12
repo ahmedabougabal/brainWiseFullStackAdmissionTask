@@ -194,7 +194,7 @@ export const Dashboard: React.FC = () => {
             <TableBody>
               {employees.map((employee) => (
                 <TableRow key={employee.id}>
-                  <TableCell>{`${employee.first_name} ${employee.last_name}`}</TableCell>
+                  <TableCell>{employee.first_name} {employee.last_name}</TableCell>
                   <TableCell>{employee.email}</TableCell>
                   <TableCell>{employee.department_name}</TableCell>
                   <TableCell>{employee.designation}</TableCell>
