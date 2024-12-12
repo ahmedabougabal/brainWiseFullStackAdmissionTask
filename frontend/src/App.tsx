@@ -36,7 +36,7 @@ function App() {
             } />
             <Route path="/employee-dashboard" element={
               <ProtectedRoute>
-                <div>Employee Dashboard (coming soon...)</div>
+                <div>Employee profile (coming soon...)</div>
               </ProtectedRoute>
             } />
             
