@@ -36,5 +36,43 @@
             "groups": [],
             "user_permissions": []
         }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$default_password_hash",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "john.doe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-12-10T09:00:00Z",
+            "email": "john.doe@techsolutions.com",
+            "role": "EMPLOYEE",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$default_password_hash",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "jane.smith",
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-12-10T09:00:00Z",
+            "email": "jane.smith@techsolutions.com",
+            "role": "EMPLOYEE",
+            "groups": [],
+            "user_permissions": []
+        }
     }
 ]
