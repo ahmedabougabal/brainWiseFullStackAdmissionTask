@@ -33,7 +33,11 @@ export const authService = {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         console.log('Decoded token payload:', payload);
-        return payload.user;
+        return {
+          id: payload.user_id,
+          email: payload.email || '',
+          role: 'USER' as const
+        };
       } catch (error) {
         console.error('Error decoding token:', error);
         return null;
