@@ -1,5 +1,5 @@
 // src/components/auth/LoginPage.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import {
@@ -11,23 +11,60 @@ import {
   Alert,
   Paper,
   useTheme,
+  Tab,
+  Tabs,
+  MenuItem,
 } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import { LoginCredentials } from '../../types/auth.types';
 import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+import { api } from '../../services/api';
+
+interface RegisterData extends LoginCredentials {
+  username: string;
+  confirmPassword: string;
+  role: 'ADMIN' | 'EMPLOYEE';
+}
 
 export const LoginPage: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginCredentials>();
+  const [isLogin, setIsLogin] = useState(true);
+  const { register: registerField, handleSubmit, formState: { errors }, watch } = useForm<RegisterData>({
+    defaultValues: {
+      role: 'EMPLOYEE'
+    }
+  });
   const { login, error, loading } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
+  const password = watch('password', '');
 
-  const onSubmit = async (data: LoginCredentials) => {
+  const onSubmit = async (data: RegisterData) => {
     try {
-      await login(data);
-      navigate('/dashboard');
-    } catch (err) {
-      // Error is handled by the auth context
+      if (isLogin) {
+        await login(data);
+        navigate('/dashboard');
+      } else {
+        // Registration
+        if (data.password !== data.confirmPassword) {
+          toast.error('Passwords do not match');
+          return;
+        }
+        
+        const response = await api.post('/auth/register/', {
+          email: data.email,
+          username: data.username,
+          password: data.password,
+          role: 'EMPLOYEE',
+          status: 'PENDING' // New users start with pending status
+        });
+        
+        toast.success('Registration successful! Please wait for admin approval to login.');
+        setIsLogin(true);
+      }
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.detail || 'An error occurred';
+      toast.error(errorMessage);
     }
   };
 
@@ -93,10 +130,17 @@ export const LoginPage: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            Employee Management Admin Portal
+            Employee Management Portal
           </Typography>
+
+          <Tabs value={isLogin ? 0 : 1} onChange={(_, newValue) => setIsLogin(newValue === 0)} sx={{ mb: 3 }}>
+            <Tab label="LOGIN" />
+            <Tab label="REGISTER" />
+          </Tabs>
+
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1, width: '100%' }}>
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+            
             <TextField
               margin="normal"
               required
@@ -105,7 +149,7 @@ export const LoginPage: React.FC = () => {
               label="Email Address"
               autoComplete="email"
               autoFocus
-              {...register('email', {
+              {...registerField('email', {
                 required: 'Email is required',
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -117,12 +161,30 @@ export const LoginPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  '&:hover fieldset': {
-                    borderColor: theme.palette.primary.main,
-                  },
                 },
               }}
             />
+
+            {!isLogin && (
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                {...registerField('username', {
+                  required: 'Username is required',
+                })}
+                error={!!errors.username}
+                helperText={errors.username?.message}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  },
+                }}
+              />
+            )}
+
             <TextField
               margin="normal"
               required
@@ -130,8 +192,7 @@ export const LoginPage: React.FC = () => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
-              {...register('password', {
+              {...registerField('password', {
                 required: 'Password is required',
                 minLength: {
                   value: 6,
@@ -143,12 +204,55 @@ export const LoginPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  '&:hover fieldset': {
-                    borderColor: theme.palette.primary.main,
-                  },
                 },
               }}
             />
+
+            {!isLogin && (
+              <>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Confirm Password"
+                  type="password"
+                  {...registerField('confirmPassword', {
+                    required: 'Please confirm your password',
+                    validate: value => value === password || 'Passwords do not match'
+                  })}
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword?.message}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    },
+                  }}
+                />
+
+                <TextField
+                  select
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Role"
+                  {...registerField('role')}
+                  value="EMPLOYEE"
+                  disabled
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      backgroundColor: 'rgba(211, 211, 211, 0.3)',
+                    },
+                    '& .Mui-disabled': {
+                      color: 'rgba(0, 0, 0, 0.6)',
+                      '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.6)',
+                    },
+                  }}
+                >
+                  <MenuItem value="EMPLOYEE">Employee</MenuItem>
+                </TextField>
+              </>
+            )}
+
             <Button
               type="submit"
               fullWidth
@@ -169,28 +273,30 @@ export const LoginPage: React.FC = () => {
               }}
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {isLogin ? (loading ? 'Signing in...' : 'Sign In') : 'Register'}
             </Button>
 
-            <Button
-              component={Link}
-              to="/employee"
-              variant="outlined"
-              fullWidth
-              sx={{
-                py: 1.5,
-                textTransform: 'none',
-                borderRadius: 2,
-                borderColor: theme.palette.primary.main,
-                color: theme.palette.primary.main,
-                '&:hover': {
-                  borderColor: theme.palette.primary.dark,
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                },
-              }}
-            >
-              Employee Portal
-            </Button>
+            {isLogin && (
+              <Button
+                component={Link}
+                to="/employee"
+                variant="outlined"
+                fullWidth
+                sx={{
+                  py: 1.5,
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  borderColor: theme.palette.primary.main,
+                  color: theme.palette.primary.main,
+                  '&:hover': {
+                    borderColor: theme.palette.primary.dark,
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              >
+                Employee Portal
+              </Button>
+            )}
           </Box>
         </Paper>
       </Container>
