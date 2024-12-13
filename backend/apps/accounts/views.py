@@ -1,11 +1,9 @@
 from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer, UserCreateSerializer
+from .serializers import UserSerializer, UserCreateSerializer, CustomTokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -14,7 +12,7 @@ class LoginView(TokenObtainPairView):
     LOGIN ENDPOINT returns JWT tokens for authentication.
     will use this in the login page requirement in the frontend.
     """
-    pass
+    serializer_class = CustomTokenObtainPairSerializer
 
 class RegisterView(generics.CreateAPIView):
     """
@@ -48,10 +46,3 @@ class UserDetailView(generics.RetrieveAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return [permissions.IsAdminUser()]
         return [permissions.IsAuthenticated()]
-
-
-
-
-
-
-

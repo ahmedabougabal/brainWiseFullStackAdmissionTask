@@ -10,6 +10,7 @@ import {
   Divider,
   CircularProgress,
   useTheme,
+  Button
 } from '@mui/material';
 import {
   Person as PersonIcon,
@@ -19,6 +20,7 @@ import {
   LocationOn as LocationIcon,
   Work as WorkIcon,
   Today as TodayIcon,
+  Logout as LogoutIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
@@ -67,46 +69,26 @@ export const EmployeeProfile: React.FC = () => {
   const [employee, setEmployee] = useState<EmployeeDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, signOut } = useAuth();
   const theme = useTheme();
 
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
       try {
+        if (!currentUser?.employee_id) {
+          setError('No employee ID found for this user');
+          setLoading(false);
+          return;
+        }
+
         setLoading(true);
-        console.log('Fetching employee details for:', currentUser?.email);
+        console.log('Fetching employee details for ID:', currentUser.employee_id);
         
-        const allEmployeesResponse = await api.get('/employees/');
-        const allEmployees = allEmployeesResponse.data;
-        console.log('All employees:', allEmployees);
-        
-        // Find Steve's data which is at index 0
-        const employeeData = allEmployees[0]; // Steve's data is the first element
-        console.log('Found employee data:', employeeData);
+        // Fetch employee details directly using the ID
+        const response = await api.get(`/employees/${currentUser.employee_id}/`);
+        const employeeData = response.data;
+        console.log('Employee data:', employeeData);
 
-        if (!employeeData?.id) {
-          console.error('No employee ID found in:', employeeData);
-          setError('Employee not found');
-          return;
-        }
-
-        // Make sure we have a valid ID
-        const employeeId = parseInt(employeeData.id);
-        if (isNaN(employeeId)) {
-          console.error('Invalid employee ID:', employeeData.id);
-          setError('Invalid employee ID');
-          return;
-        }
-
-        // Now fetch the detailed employee data using the found ID
-        const detailsUrl = `/employees/${employeeId}/`;
-        console.log('Fetching employee details from:', detailsUrl);
-        
-        const employeeDetailsResponse = await api.get(detailsUrl);
-        const detailedData = employeeDetailsResponse.data;
-        console.log('Detailed employee data:', detailedData);
-        
-        // If we get here, we have both the basic and detailed data
         setEmployee({
           name: employeeData.name,
           email: employeeData.email,
@@ -114,25 +96,24 @@ export const EmployeeProfile: React.FC = () => {
           address: employeeData.address || 'N/A',
           designation: employeeData.designation || 'N/A',
           status: employeeData.status || 'PENDING',
-          hired_on: employeeData.join_date || null,
+          hired_on: employeeData.hired_on || null,
           company: {
-            name: employeeData.company_name || 'N/A'
+            name: employeeData.company_details?.name || 'N/A'
           },
           department: {
-            name: employeeData.department_name || 'N/A'
+            name: employeeData.department_details?.name || 'N/A'
           }
         });
-      } catch (error) {
-        console.error('Error fetching employee details:', error);
-        setError('Failed to fetch employee details. Please check the console for more information.');
-      } finally {
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching employee details:', err);
+        setError('Error loading employee details');
         setLoading(false);
       }
     };
 
-    // Remove the currentUser?.id check since we want to fetch based on email
     fetchEmployeeDetails();
-  }, [currentUser?.email]); // Change dependency to email instead of id
+  }, [currentUser]);
 
   if (loading) {
     return (
@@ -151,7 +132,17 @@ export const EmployeeProfile: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<LogoutIcon />}
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+      </Box>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
         <Box display="flex" alignItems="center" mb={4}>
           <Box

@@ -36,7 +36,8 @@ export const authService = {
         return {
           id: payload.user_id,
           email: payload.email || '',
-          role: 'USER' as const
+          role: payload.role || 'USER',
+          employee_id: payload.employee_id
         };
       } catch (error) {
         console.error('Error decoding token:', error);

@@ -24,6 +24,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { api } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth'; 
 
@@ -55,7 +56,7 @@ export const Dashboard: React.FC = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, signOut } = useAuth();
 
   useEffect(() => {
     console.log('Dashboard mounted');
@@ -153,158 +154,169 @@ export const Dashboard: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ mt: 4, mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Employee Dashboard
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 4 }}>
+        <Typography variant="h4" component="h1">
+          Employee Management Dashboard
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setSelectedEmployee(null);
-            setFormData({
-              first_name: '',
-              last_name: '',
-              email: '',
-              mobile_number: '',
-              address: '',
-              designation: '',
-              department: '',
-              company: '',
-            });
-            setOpenDialog(true);
-          }}
-          sx={{ mb: 2 }}
-        >
-          Add Employee
-        </Button>
-        
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Department</TableCell>
-                <TableCell>Designation</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {employees.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell>{employee.first_name} {employee.last_name}</TableCell>
-                  <TableCell>{employee.email}</TableCell>
-                  <TableCell>{employee.department_name}</TableCell>
-                  <TableCell>{employee.designation}</TableCell>
-                  <TableCell>{employee.status}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => {
-                        setSelectedEmployee(employee);
-                        setFormData({
-                          first_name: employee.first_name,
-                          last_name: employee.last_name,
-                          email: employee.email,
-                          mobile_number: employee.mobile_number,
-                          address: employee.address,
-                          designation: employee.designation,
-                          department: employee.department.toString(),
-                          company: employee.company.toString(),
-                        });
-                        setOpenDialog(true);
-                      }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(employee.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>
-            {selectedEmployee ? 'Edit Employee' : 'Add Employee'}
-          </DialogTitle>
-          <DialogContent>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
-              <TextField
-                label="First Name"
-                value={formData.first_name}
-                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-              />
-              <TextField
-                label="Last Name"
-                value={formData.last_name}
-                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-              />
-              <TextField
-                label="Email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-              <TextField
-                label="Mobile Number"
-                value={formData.mobile_number}
-                onChange={(e) => setFormData({ ...formData, mobile_number: e.target.value })}
-              />
-              <TextField
-                label="Address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              />
-              <TextField
-                label="Designation"
-                value={formData.designation}
-                onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-              />
-              <TextField
-                select
-                label="Department"
-                value={formData.department}
-                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-              >
-                {departments.map((dept) => (
-                  <MenuItem key={dept.id} value={dept.id}>
-                    {dept.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                label="Company"
-                value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              >
-                {/* Add company options here */}
-              </TextField>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-            <Button onClick={handleSubmit} variant="contained">
-              {selectedEmployee ? 'Update' : 'Add'}
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={6000}
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-        >
-          <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<LogoutIcon />}
+            onClick={signOut}
+            sx={{ mr: 2 }}
+          >
+            Sign Out
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setSelectedEmployee(null);
+              setFormData({
+                first_name: '',
+                last_name: '',
+                email: '',
+                mobile_number: '',
+                address: '',
+                designation: '',
+                department: '',
+                company: '',
+              });
+              setOpenDialog(true);
+            }}
+            sx={{ mb: 2 }}
+          >
+            Add Employee
+          </Button>
+        </Box>
       </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Department</TableCell>
+              <TableCell>Designation</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {employees.map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell>{employee.first_name} {employee.last_name}</TableCell>
+                <TableCell>{employee.email}</TableCell>
+                <TableCell>{employee.department_name}</TableCell>
+                <TableCell>{employee.designation}</TableCell>
+                <TableCell>{employee.status}</TableCell>
+                <TableCell>
+                  <IconButton
+                    onClick={() => {
+                      setSelectedEmployee(employee);
+                      setFormData({
+                        first_name: employee.first_name,
+                        last_name: employee.last_name,
+                        email: employee.email,
+                        mobile_number: employee.mobile_number,
+                        address: employee.address,
+                        designation: employee.designation,
+                        department: employee.department.toString(),
+                        company: employee.company.toString(),
+                      });
+                      setOpenDialog(true);
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDelete(employee.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>
+          {selectedEmployee ? 'Edit Employee' : 'Add Employee'}
+        </DialogTitle>
+        <DialogContent>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
+            <TextField
+              label="First Name"
+              value={formData.first_name}
+              onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+            />
+            <TextField
+              label="Last Name"
+              value={formData.last_name}
+              onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+            <TextField
+              label="Mobile Number"
+              value={formData.mobile_number}
+              onChange={(e) => setFormData({ ...formData, mobile_number: e.target.value })}
+            />
+            <TextField
+              label="Address"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            />
+            <TextField
+              label="Designation"
+              value={formData.designation}
+              onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+            />
+            <TextField
+              select
+              label="Department"
+              value={formData.department}
+              onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+            >
+              {departments.map((dept) => (
+                <MenuItem key={dept.id} value={dept.id}>
+                  {dept.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              label="Company"
+              value={formData.company}
+              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            >
+              {/* Add company options here */}
+            </TextField>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained">
+            {selectedEmployee ? 'Update' : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
