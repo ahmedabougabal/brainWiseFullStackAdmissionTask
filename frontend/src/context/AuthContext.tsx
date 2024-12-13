@@ -40,10 +40,19 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
                 loading:false,
                 error:null,
             });
-            toast.success(`Welcome ${response.user.email}!`, {
-                position: "top-right",
-                autoClose: 3000,
-            });
+            
+            // Only show welcome message if user is accessing the appropriate portal
+            const isAdminRoute = window.location.pathname.includes('/admin');
+            const isEmployeeRoute = window.location.pathname.includes('/employee');
+            
+            if ((isAdminRoute && response.user.role === 'ADMIN') || 
+                (isEmployeeRoute && response.user.role === 'USER') ||
+                (!isAdminRoute && !isEmployeeRoute)) {
+                toast.success(`Welcome ${response.user.email}!`, {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
+            }
         } catch (error) {
             setState(prev=>({
                 ...prev,
