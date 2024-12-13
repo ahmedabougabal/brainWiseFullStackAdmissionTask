@@ -30,8 +30,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 interface Employee {
   id: number;
-  first_name: string;
-  last_name: string;
+  name: string;
   email: string;
   mobile_number: string;
   address: string;
@@ -69,7 +68,11 @@ export const Dashboard: React.FC = () => {
     try {
       console.log('Fetching employees...');
       const response = await api.get('/employees/');
-      console.log('Employees response:', response.data);
+      console.log('Raw employee data:', response.data);
+      // Log the first employee to check its structure
+      if (response.data.length > 0) {
+        console.log('First employee details:', response.data[0]);
+      }
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -142,8 +145,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
+    name: '',
     email: '',
     mobile_number: '',
     address: '',
@@ -175,8 +177,7 @@ export const Dashboard: React.FC = () => {
             onClick={() => {
               setSelectedEmployee(null);
               setFormData({
-                first_name: '',
-                last_name: '',
+                name: '',
                 email: '',
                 mobile_number: '',
                 address: '',
@@ -207,7 +208,7 @@ export const Dashboard: React.FC = () => {
           <TableBody>
             {employees.map((employee) => (
               <TableRow key={employee.id}>
-                <TableCell>{employee.first_name} {employee.last_name}</TableCell>
+                <TableCell>{employee.name}</TableCell>
                 <TableCell>{employee.email}</TableCell>
                 <TableCell>{employee.department_name}</TableCell>
                 <TableCell>{employee.designation}</TableCell>
@@ -217,8 +218,7 @@ export const Dashboard: React.FC = () => {
                     onClick={() => {
                       setSelectedEmployee(employee);
                       setFormData({
-                        first_name: employee.first_name,
-                        last_name: employee.last_name,
+                        name: employee.name,
                         email: employee.email,
                         mobile_number: employee.mobile_number,
                         address: employee.address,
@@ -248,14 +248,9 @@ export const Dashboard: React.FC = () => {
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
             <TextField
-              label="First Name"
-              value={formData.first_name}
-              onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-            />
-            <TextField
-              label="Last Name"
-              value={formData.last_name}
-              onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+              label="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
             <TextField
               label="Email"
