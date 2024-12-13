@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect} from "react";
 import {AuthState, LoginCredentials} from "../types/auth.types";
 import {authService} from "../services/auth.services";
+import { toast } from 'react-toastify';
 
 interface AuthContextType extends AuthState {
     login:(credentials: LoginCredentials) => Promise<void>;
@@ -18,47 +19,63 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({
         loading:true,
         error : null,
     });
-  useEffect(() => {
-    const user = authService.getCurrentUser();
-    setState(prev => ({
-      ...prev,
-      isAuthenticated: !!user,
-      user,
-      loading: false,
-    }));
-  }, []);
-  const login = async (credentials: LoginCredentials) => {
-      try {
-          setState(prev=> ({...prev, loading:true, error:null}));
-          const response = await authService.login(credentials);
-          setState({
-              isAuthenticated:true,
-              user: response.user,
-              loading:false,
-              error:null,
-          });
-      } catch (error) {
-          setState(prev=>({
-              ...prev,
-              loading:false,
-              error: "invalid credentials",
-          }));
-      }
-  }
-  const signOut =() =>{
-      authService.logout();
-      setState({
-          isAuthenticated:false,
-          user:null,
-          loading:false,
-          error:null,
-      });
-  }
-  return (
-      <AuthContext.Provider value={{...state, login, signOut}}>
-          {children}
-      </AuthContext.Provider>
-  );
+
+    useEffect(() => {
+        const user = authService.getCurrentUser();
+        setState(prev => ({
+            ...prev,
+            isAuthenticated: !!user,
+            user,
+            loading: false,
+        }));
+    }, []);
+
+    const login = async (credentials: LoginCredentials) => {
+        try {
+            setState(prev=> ({...prev, loading:true, error:null}));
+            const response = await authService.login(credentials);
+            setState({
+                isAuthenticated:true,
+                user: response.user,
+                loading:false,
+                error:null,
+            });
+            toast.success(`Welcome ${response.user.email}!`, {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        } catch (error) {
+            setState(prev=>({
+                ...prev,
+                loading:false,
+                error: "invalid credentials",
+            }));
+            toast.error('Invalid credentials. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+            });
+        }
+    };
+
+    const signOut =() =>{
+        authService.logout();
+        setState({
+            isAuthenticated:false,
+            user:null,
+            loading:false,
+            error:null,
+        });
+        toast.info('You have been signed out.', {
+            position: "top-right",
+            autoClose: 3000,
+        });
+    };
+
+    return (
+        <AuthContext.Provider value={{...state, login, signOut}}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export const useAuth = () => {
