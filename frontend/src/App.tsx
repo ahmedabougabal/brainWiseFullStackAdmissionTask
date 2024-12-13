@@ -4,9 +4,12 @@ import {CssBaseline, ThemeProvider, createTheme} from "@mui/material";
 import {LoginPage} from "./components/auth/LoginPage";
 import {EmployeeLoginPage} from "./components/auth/EmployeeLoginPage";
 import {ProtectedRoute} from "./components/auth/ProtectedRoute";
+import {AdminRoute} from "./components/auth/AdminRoute";
 import {AuthProvider} from "./context/AuthContext";
 import {Dashboard} from "./components/Dashboard";
 import {EmployeeProfile} from "./components/employees/EmployeeProfile";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme({
   palette: {
@@ -30,12 +33,14 @@ function App() {
             <Route path="/admin" element={<LoginPage />} />
             <Route path="/employee" element={<EmployeeLoginPage />} />
             
-            {/* Protected routes */}
+            {/* Admin routes */}
             <Route path="/dashboard" element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <Dashboard />
-              </ProtectedRoute>
+              </AdminRoute>
             } />
+
+            {/* Employee routes */}
             <Route path="/employee-dashboard" element={
               <ProtectedRoute>
                 <EmployeeProfile />
@@ -46,6 +51,7 @@ function App() {
             <Route path="/login" element={<Navigate to="/admin" replace />} />
             <Route path="/" element={<Navigate to="/admin" replace />} />
           </Routes>
+          <ToastContainer />
         </Router>
       </AuthProvider>
     </ThemeProvider>
