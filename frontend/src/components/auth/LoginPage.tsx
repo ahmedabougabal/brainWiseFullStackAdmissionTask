@@ -1,5 +1,4 @@
-// src/components/auth/LoginPage.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import {
@@ -11,59 +10,24 @@ import {
   Alert,
   Paper,
   useTheme,
-  Tab,
-  Tabs,
-  MenuItem,
 } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import { LoginCredentials } from '../../types/auth.types';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
-import { api } from '../../services/api';
-
-interface RegisterData extends LoginCredentials {
-  username: string;
-  confirmPassword: string;
-  role: 'ADMIN' | 'EMPLOYEE';
-}
 
 export const LoginPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const { register: registerField, handleSubmit, formState: { errors }, watch } = useForm<RegisterData>({
-    defaultValues: {
-      role: 'EMPLOYEE'
-    }
-  });
+  const { register: registerField, handleSubmit, formState: { errors } } = useForm<LoginCredentials>();
   const { login, error, loading } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
-  const password = watch('password', '');
 
-  const onSubmit = async (data: RegisterData) => {
+  const onSubmit = async (data: LoginCredentials) => {
     try {
-      if (isLogin) {
-        await login(data);
-        navigate('/dashboard');
-      } else {
-        // Registration
-        if (data.password !== data.confirmPassword) {
-          toast.error('Passwords do not match');
-          return;
-        }
-        
-        const response = await api.post('/auth/register/', {
-          email: data.email,
-          username: data.username,
-          password: data.password,
-          role: 'EMPLOYEE',
-          status: 'PENDING' // New users start with pending status
-        });
-        
-        toast.success('Registration successful! Please wait for admin approval to login.');
-        setIsLogin(true);
-      }
+      await login(data);
+      navigate('/dashboard');
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 'Invalid Operation, Email already exists, or may be some other error';
+      const errorMessage = err.response?.data?.detail || 'An error occurred during login';
       toast.error(errorMessage);
     }
   };
@@ -130,13 +94,8 @@ export const LoginPage: React.FC = () => {
               textAlign: 'center',
             }}
           >
-            Employee Management Portal
+            Admin Portal
           </Typography>
-
-          <Tabs value={isLogin ? 0 : 1} onChange={(_, newValue) => setIsLogin(newValue === 0)} sx={{ mb: 3 }}>
-            <Tab label="LOGIN" />
-            <Tab label="REGISTER" />
-          </Tabs>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1, width: '100%' }}>
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -165,26 +124,6 @@ export const LoginPage: React.FC = () => {
               }}
             />
 
-            {!isLogin && (
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                {...registerField('username', {
-                  required: 'Username is required',
-                })}
-                error={!!errors.username}
-                helperText={errors.username?.message}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                  },
-                }}
-              />
-            )}
-
             <TextField
               margin="normal"
               required
@@ -208,95 +147,42 @@ export const LoginPage: React.FC = () => {
               }}
             />
 
-            {!isLogin && (
-              <>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  label="Confirm Password"
-                  type="password"
-                  {...registerField('confirmPassword', {
-                    required: 'Please confirm your password',
-                    validate: value => value === password || 'Passwords do not match'
-                  })}
-                  error={!!errors.confirmPassword}
-                  helperText={errors.confirmPassword?.message}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    },
-                  }}
-                />
-
-                <TextField
-                  select
-                  margin="normal"
-                  required
-                  fullWidth
-                  label="Role"
-                  {...registerField('role')}
-                  value="EMPLOYEE"
-                  disabled
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      backgroundColor: 'rgba(211, 211, 211, 0.3)',
-                    },
-                    '& .Mui-disabled': {
-                      color: 'rgba(0, 0, 0, 0.6)',
-                      '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.6)',
-                    },
-                  }}
-                >
-                  <MenuItem value="EMPLOYEE">Employee</MenuItem>
-                </TextField>
-              </>
-            )}
-
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
-                mt: 4,
+                mt: 3,
                 mb: 2,
                 py: 1.5,
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 fontWeight: 600,
                 textTransform: 'none',
-                borderRadius: 2,
-                backgroundColor: theme.palette.primary.main,
-                '&:hover': {
-                  backgroundColor: theme.palette.primary.dark,
-                },
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
               }}
-              disabled={loading}
             >
-              {isLogin ? (loading ? 'Signing in...' : 'Sign In') : 'Register'}
+              {loading ? 'Signing in...' : 'Sign In'}
             </Button>
 
-            {isLogin && (
-              <Button
-                component={Link}
-                to="/employee"
-                variant="outlined"
-                fullWidth
-                sx={{
-                  py: 1.5,
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  borderColor: theme.palette.primary.main,
-                  color: theme.palette.primary.main,
-                  '&:hover': {
-                    borderColor: theme.palette.primary.dark,
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                  },
-                }}
-              >
-                Employee Portal
-              </Button>
-            )}
+            <Button
+              component={Link}
+              to="/employee"
+              variant="outlined"
+              fullWidth
+              sx={{
+                py: 1.5,
+                textTransform: 'none',
+                borderColor: theme.palette.primary.main,
+                color: theme.palette.primary.main,
+                '&:hover': {
+                  borderColor: theme.palette.primary.dark,
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
+              }}
+            >
+              Employee Portal
+            </Button>
           </Box>
         </Paper>
       </Container>
