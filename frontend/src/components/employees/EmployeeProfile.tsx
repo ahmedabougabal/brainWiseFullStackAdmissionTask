@@ -10,6 +10,7 @@ import {
   Divider,
   CircularProgress,
   useTheme,
+  Button
 } from '@mui/material';
 import {
   Person as PersonIcon,
@@ -19,6 +20,7 @@ import {
   LocationOn as LocationIcon,
   Work as WorkIcon,
   Today as TodayIcon,
+  Logout as LogoutIcon
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
@@ -67,7 +69,7 @@ export const EmployeeProfile: React.FC = () => {
   const [employee, setEmployee] = useState<EmployeeDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, signOut } = useAuth();
   const theme = useTheme();
 
   useEffect(() => {
@@ -80,12 +82,14 @@ export const EmployeeProfile: React.FC = () => {
         const allEmployees = allEmployeesResponse.data;
         console.log('All employees:', allEmployees);
         
-        // Find Steve's data which is at index 0
-        const employeeData = allEmployees[0]; // Steve's data is the first element
+        // Find the employee data that matches the current user's email
+        const employeeData = allEmployees.find(
+          (emp: any) => emp.email === currentUser?.email
+        );
         console.log('Found employee data:', employeeData);
 
         if (!employeeData?.id) {
-          console.error('No employee ID found in:', employeeData);
+          console.error('No employee ID found for email:', currentUser?.email);
           setError('Employee not found');
           return;
         }
@@ -151,7 +155,17 @@ export const EmployeeProfile: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<LogoutIcon />}
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+      </Box>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
         <Box display="flex" alignItems="center" mb={4}>
           <Box
