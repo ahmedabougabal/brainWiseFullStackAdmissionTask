@@ -66,7 +66,7 @@
   - ✅ Form Components
   - ✅ Data Tables
 
-## 🔄 State Management
+## State Management
 ✅ Context API Implementation
   - ✅ Authentication State
   - ✅ User Context
@@ -82,7 +82,45 @@
 
 
 ---
+## Not yet Implemented. . .   
 
+### Company Management ❌  
+- **List Companies Page**: Not implemented  
+- **View Company Page**: Not implemented  
+- **Edit and Delete Functionality**: Not implemented  
+
+### Department Management ❌  
+- **List Departments Page**: Not implemented  
+- **View Department Page**: Not implemented  
+- **Edit and Delete Functionality**: Not implemented  
+
+### Employee Management 🟡  
+- **List Employees Page**: Partially implemented (available in Dashboard)  
+- **Create Employee Page**: Not implemented  
+- **Edit Employee Page**: Not implemented  
+- **View Employee Page**: Implemented (via `EmployeeProfile` component)  
+
+### User Account Management (Bonus) 🟡  
+- **Edit User Account Page**: Not found  
+- **View User Account Page**: Partially implemented (via `EmployeeProfile`)  
+
+### Summary Dashboard (Bonus) 🟡  
+- **Basic Dashboard Structure**: Implemented  
+- **Analytics Summary**: not implemented  
+
+### UI Requirements 🟡  
+- **Navigation Between Sections**: Partially implemented  
+- **Clean and Organized UI**: Implemented (using Material-UI)  
+- **Responsive Design**: Implemented  
+
+### Validations 🟡  
+- **Required Fields Validation**: Implemented (in login forms)  
+- **Email and Mobile Number Format Validation**: Partially implemented  
+- **Department-Company Relationship Validation**: Not implemented  
+- **Error Handling and Messages**: Partially implemented  
+
+
+---
 ## Let's Get You Started to Run This Project Locally
 
 To clone this repository and set it up locally, use the following command:
