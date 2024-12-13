@@ -63,7 +63,7 @@ export const LoginPage: React.FC = () => {
         setIsLogin(true);
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 'An error occurred';
+      const errorMessage = err.response?.data?.detail || 'Invalid Operation, Email already exists, or may be some other error';
       toast.error(errorMessage);
     }
   };
